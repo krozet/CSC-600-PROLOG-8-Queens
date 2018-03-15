@@ -8,6 +8,36 @@ print_coordinates :-
   solution(A),
   display_coordinates(A, 1).
 
+print_board :-
+  solution(A),
+  print_boundry,
+  print_columns(A, 1),
+  print_column_letters,
+  nl.
+
+print_square :- write("| ").
+print_queen :- write("|Q").
+print_end_quare :- write("|"), nl.
+print_boundry :- write("   - - - - - - - - "), nl.
+print_column_letters :- write("   h g f e d c b a "), nl.
+
+print_columns([], _).
+print_columns([H|T], C) :-
+  write(C), write(" "),
+  print_row(H, 1),
+  C1 is C + 1,
+  print_columns(T, C1).
+
+print_row(_, 9) :-
+  print_end_quare,
+  print_boundry, !.
+print_row(X, Col) :-
+  X is Col, print_queen,
+  Col1 is Col + 1, print_row(X, Col1).
+print_row(X, Col) :-
+  X =\= Col, print_square,
+  Col1 is Col + 1, print_row(X, Col1).
+
 solution(Queens) :-
  permutation([1,2,3,4,5,6,7,8], Queens),
  safe(Queens).
@@ -40,33 +70,3 @@ display_coordinates([H|T], Y) :-
   write(Y), write("]"), nl,
   Y1 is Y + 1,
   display_coordinates(T, Y1).
-
-print_board :-
-  solution(A),
-  print_boundry,
-  print_columns(A, 1),
-  print_column_letters,
-  nl.
-
-print_columns([], _).
-print_columns([H|T], C) :-
-  write(C), write(" "),
-  print_row(H, 1),
-  C1 is C + 1,
-  print_columns(T, C1).
-
-print_row(_, 9) :-
-  print_end_quare,
-  print_boundry, !.
-print_row(X, Col) :-
-  X is Col, print_queen,
-  Col1 is Col + 1, print_row(X, Col1).
-print_row(X, Col) :-
-  X =\= Col, print_square,
-  Col1 is Col + 1, print_row(X, Col1).
-
-print_square :- write("| ").
-print_queen :- write("|Q").
-print_end_quare :- write("|"), nl.
-print_boundry :- write("   - - - - - - - - "), nl.
-print_column_letters :- write("   h g f e d c b a "), nl.
